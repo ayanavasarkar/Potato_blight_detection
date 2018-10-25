@@ -43,13 +43,24 @@ class img_processing:
             #cl = self.clahe.apply(blur)
             #bilateral = cv2.bilateralFilter(cl, 9, 75, 75)
 
-            # h = self.hog.compute(img, winStride=(128, 128), padding=(0, 0))
+            # h = self.hog.compute(img, winStride=(16, 16), padding=(0, 0))
             # h_trans = h.transpose()
             # self.hog_feat = np.vstack(h_trans)
+
+
+    def check_ht_wd(self):
+
+        wd = 1000
+        ht = 1000
+        for i in range(0, len(self.early_blight_files)):
+            path = str(self.abs_path) + str(self.early_blight_files[i])
+
+            img = cv2.imread(path, 0)
+
             height, width = img.shape[:2]
-            if(height<= ht):
+            if (height <= ht):
                 ht = height
-            if(width <= wd):
+            if (width <= wd):
                 wd = width
 
             height = 0
@@ -57,21 +68,18 @@ class img_processing:
 
             return (ht, wd)
 
-
-
-
 obj = img_processing()
 
 early_blight_path = "Potato___Early_blight/"
-healthy_path = "Potato___healthy/1.jpg"
-late_blight_path = "Potato__Late_blight/1.jpg"
+healthy_path = "Potato___healthy/"
+late_blight_path = "Potato___Late_blight/"
 
 
-obj.get_images(early_blight_path)
+obj.get_images(late_blight_path)
 
-w = 128
-h = 128
-ht, wd = obj.pre_process(w, h)
+w = 256
+h = 256
+# ht, wd = obj.check_ht_wd()
 # print(hog_feat.shape)
 print(ht, wd)
 exit(0)
