@@ -16,25 +16,67 @@ class img_processing:
         plt.imshow(cv2.cvtColor(img, cv2.COLOR_GRAY2BGR))
         plt.show()
 
-    def get_images():
-
+    def get_images(self, abs_path):
+        self.abs_path = abs_path
         if os.path.exists(abs_path):
 
-            early_blight_files = os.listdir(abs_path)
-            print(len(early_blight_files))
+            self.early_blight_files = os.listdir(self.abs_path)
+            print((self.early_blight_files[0]), type(self.early_blight_files))
 
         else:
             print("Nothing")
 
+    def pre_process(self, w, h):
+
+        self.clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
+        self.hog=cv2.HOGDescriptor()
+        self.hog_feat = np.array([])
+        wd = 1000
+        ht = 1000
+        for i in range(0,len(self.early_blight_files)):
+
+            path = str(self.abs_path) + str(self.early_blight_files[i])
+
+            img = cv2.imread(path, 0)
+            #img = cv2.resize(img, (w, h), interpolation=cv2.INTER_CUBIC)
+            #blur = cv2.GaussianBlur(img, (5, 5), 0)
+            #cl = self.clahe.apply(blur)
+            #bilateral = cv2.bilateralFilter(cl, 9, 75, 75)
+
+            # h = self.hog.compute(img, winStride=(128, 128), padding=(0, 0))
+            # h_trans = h.transpose()
+            # self.hog_feat = np.vstack(h_trans)
+            height, width = img.shape[:2]
+            if(height<= ht):
+                ht = height
+            if(width <= wd):
+                wd = width
+
+            height = 0
+            width = 0
+
+            return (ht, wd)
+
+
+
 
 obj = img_processing()
 
-early_blight_path = "Potato___Early_blight/2.jpg"
+early_blight_path = "Potato___Early_blight/"
 healthy_path = "Potato___healthy/1.jpg"
 late_blight_path = "Potato__Late_blight/1.jpg"
 
-#back_sub2 = cv2.createBackgroundSubtractorMOG2()
 
+obj.get_images(early_blight_path)
+
+w = 128
+h = 128
+ht, wd = obj.pre_process(w, h)
+# print(hog_feat.shape)
+print(ht, wd)
+exit(0)
+
+#back_sub2 = cv2.createBackgroundSubtractorMOG2()
 
 img1 = cv2.imread(early_blight_path,0)
 img2 = cv2.imread(healthy_path)
@@ -58,6 +100,7 @@ obj.show_img(cl)
 
 bilateral = cv2.bilateralFilter(cl,9,75,75)
 obj.show_img(bilateral)
+
 exit(0)
 
 
