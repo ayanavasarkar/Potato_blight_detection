@@ -2,13 +2,19 @@ import numpy as np
 import matplotlib
 import cv2
 import matplotlib.pyplot as plt
-import os, os.path
+import os, os.path, imp
 import glob
 
+from sklearn.svm import SVC
 
 class img_processing:
     def __init__(self):
         pass
+
+    def show_img(self, img):
+        plt.axis("off")
+        plt.imshow(cv2.cvtColor(img, cv2.COLOR_GRAY2BGR))
+        plt.show()
 
     def get_images():
 
@@ -21,6 +27,7 @@ class img_processing:
             print("Nothing")
 
 
+obj = img_processing()
 
 early_blight_path = "Potato___Early_blight/2.jpg"
 healthy_path = "Potato___healthy/1.jpg"
@@ -35,10 +42,7 @@ img3 = cv2.imread(late_blight_path)
 
 #img1 = back_sub2.apply(img1)
 
-# plt.axis("off")
-plt.imshow(cv2.cvtColor(img1, cv2.COLOR_GRAY2BGR))
-plt.show()
-
+obj.show_img(img1)
 #back = back_sub2.apply(img1)
 
 # plt.axis("off")
@@ -46,22 +50,25 @@ plt.show()
 # plt.show()
 
 blur1 = cv2.GaussianBlur(img1,(5,5),0)
-clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(2,2))
+obj.show_img(blur1)
+
+clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
 cl = clahe.apply(blur1)
-plt.imshow(cv2.cvtColor(cl, cv2.COLOR_GRAY2RGB))
-plt.show()
+obj.show_img(cl)
+
+bilateral = cv2.bilateralFilter(cl,9,75,75)
+obj.show_img(bilateral)
 exit(0)
 
-blur1 = cv2.GaussianBlur(img1,(5,5),0)
+
+
+
+
+
+#######To be tried
+blur1 = cv2.GaussianBlur(img1,(2,2),0)
 median = cv2.medianBlur(img1,5)
 blur2 = cv2.bilateralFilter(img1,25,100,100)
-
-plt.imshow(cv2.cvtColor(blur2, cv2.COLOR_BGR2RGB))
-plt.show()
-
-plt.imshow(cv2.cvtColor(median, cv2.COLOR_BGR2RGB))
-plt.show()
-exit(0)
 
 canny = cv2.Canny(img1, 100, 200)
 
@@ -72,11 +79,6 @@ ret, thresh = cv2.threshold(img1,127,255,cv2.THRESH_BINARY_INV+cv2.THRESH_OTSU)
 th2 = cv2.adaptiveThreshold(thresh,1,cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY,11,2)
 th3 = cv2.adaptiveThreshold(img1,1,cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY,11,2)
 
-plt.imshow(th2)
-plt.show()
-
-plt.imshow(th3)
-plt.show()
 exit(0)
 # loop over the threshold methods
 for (threshName, threshMethod) in methods:
