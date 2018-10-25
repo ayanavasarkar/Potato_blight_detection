@@ -47,7 +47,7 @@ class img_processing:
             # h_trans = h.transpose()
             # self.hog_feat = np.vstack(h_trans)
 
-
+        self.show_img(img)
     def check_ht_wd(self):
 
         wd = 1000
@@ -65,8 +65,8 @@ class img_processing:
 
             height = 0
             width = 0
-
-            return (ht, wd)
+        self.show_img(img)
+        return (ht, wd)
 
 obj = img_processing()
 
@@ -75,11 +75,11 @@ healthy_path = "Potato___healthy/"
 late_blight_path = "Potato___Late_blight/"
 
 
-obj.get_images(late_blight_path)
+obj.get_images(healthy_path)
 
 w = 256
 h = 256
-# ht, wd = obj.check_ht_wd()
+ht, wd = obj.check_ht_wd()
 # print(hog_feat.shape)
 print(ht, wd)
 exit(0)
