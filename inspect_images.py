@@ -109,11 +109,6 @@ obj.show_img(cl)
 bilateral = cv2.bilateralFilter(cl,9,75,75)
 obj.show_img(bilateral)
 
-exit(0)
-
-
-
-
 
 
 #######To be tried
