@@ -33,23 +33,25 @@ class img_processing:
         self.clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
         self.hog=cv2.HOGDescriptor()
         self.hog_feat = np.array([])
-        wd = 1000
-        ht = 1000
+        w = 256
+        h = 256
+
         for i in range(0,len(self.early_blight_files)):
 
             path = str(self.abs_path) + str(self.early_blight_files[i])
 
             img = cv2.imread(path, 0)
-            #img = cv2.resize(img, (w, h), interpolation=cv2.INTER_CUBIC)
-            #blur = cv2.GaussianBlur(img, (5, 5), 0)
-            #cl = self.clahe.apply(blur)
-            #bilateral = cv2.bilateralFilter(cl, 9, 75, 75)
+            img = cv2.resize(img, (w, h), interpolation=cv2.INTER_CUBIC)
+            blur = cv2.GaussianBlur(img, (5, 5), 0)
+            cl = self.clahe.apply(blur)
+            bilateral = cv2.bilateralFilter(cl, 9, 75, 75)
 
-            # h = self.hog.compute(img, winStride=(16, 16), padding=(0, 0))
-            # h_trans = h.transpose()
-            # self.hog_feat = np.vstack(h_trans)
+            h = self.hog.compute(bilateral, winStride=(16, 16), padding=(0, 0))
+            h_trans = h.transpose()
+            self.hog_feat = np.vstack(h_trans)
 
-        self.show_img(img)
+        #self.show_img(img)
+
     def check_ht_wd(self):
 
         wd = 1000
@@ -79,12 +81,19 @@ late_blight_path = "Potato___Late_blight/"
 
 obj.get_images(healthy_path)
 
-w = 256
-h = 256
-ht, wd = obj.check_ht_wd()
-# print(hog_feat.shape)
-print(ht, wd)
-exit(0)
+
+
+
+
+
+
+
+# w = 256
+# h = 256
+# ht, wd = obj.check_ht_wd()
+# # print(hog_feat.shape)
+# print(ht, wd)
+# exit(0)
 
 #back_sub2 = cv2.createBackgroundSubtractorMOG2()
 
