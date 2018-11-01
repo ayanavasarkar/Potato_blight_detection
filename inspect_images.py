@@ -74,19 +74,12 @@ class img_processing:
 
 obj = img_processing()
 
-early_blight_path = "Potato___Early_blight/"
-healthy_path = "Potato___healthy/"
-late_blight_path = "Potato___Late_blight/"
+early_blight_path = "Potato___Early_blight/"    #1
+healthy_path = "Potato___healthy/"              #0
+late_blight_path = "Potato___Late_blight/"      #2
 
 
 obj.get_images(healthy_path)
-
-
-
-
-
-
-
 
 # w = 256
 # h = 256
@@ -120,7 +113,7 @@ obj.show_img(cl)
 bilateral = cv2.bilateralFilter(cl,9,75,75)
 obj.show_img(bilateral)
 
-
+exit(0)
 
 #######To be tried
 blur1 = cv2.GaussianBlur(img1,(2,2),0)
