@@ -26,7 +26,7 @@ class img_processing:
             print((self.early_blight_files[0]), type(self.early_blight_files))
 
         else:
-            print("Nothing")
+            print("Path not right")
 
     def pre_process(self, w, h):
 
